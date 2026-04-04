@@ -16,6 +16,11 @@ const stubAliases = {
   '@specify-sh/sdk': path.join(stubsDir, 'specify-sh-sdk.js'),
   'brotli-compress/js': path.resolve(__dirname, 'node_modules/brotli-compress/js.js'),
   '@helia/verified-fetch': path.join(stubsDir, 'helia-verified-fetch.js'),
+  'graphiql': path.join(stubsDir, 'graphiql.js'),
+  '@graphiql/toolkit': path.join(stubsDir, 'graphiql-toolkit.js'),
+  '@graphiql/react': path.join(stubsDir, 'graphiql.js'),
+  'monaco-graphql': path.join(stubsDir, 'graphiql.js'),
+  '@multisender.app/multisender-react-widget': path.join(stubsDir, 'multisender-widget.js'),
 };
 
 /** @type {import('next').NextConfig} */

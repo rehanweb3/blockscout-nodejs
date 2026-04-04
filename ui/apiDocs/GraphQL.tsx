@@ -5,7 +5,7 @@ import React from 'react';
 
 import config from 'configs/app';
 import buildUrl from 'lib/api/buildUrl';
-import 'graphiql/graphiql.css';
+
 import useApiQuery from 'lib/api/useApiQuery';
 import { useColorMode } from 'toolkit/chakra/color-mode';
 import { ContentLoader } from 'toolkit/components/loaders/ContentLoader';

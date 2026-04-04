@@ -22,10 +22,26 @@ BACKEND_PID=$!
 
 sleep 2
 
-echo "Starting Next.js frontend (dev mode)..."
 cd /home/runner/workspace
-NODE_OPTIONS="--max-old-space-size=4096" npm run dev &
-FRONTEND_PID=$!
+
+if [ ! -d ".next" ] || [ ! -f ".next/BUILD_ID" ]; then
+  echo "No production build found — running next build..."
+  NODE_OPTIONS="--max-old-space-size=6144" npm run build
+  BUILD_STATUS=$?
+  if [ $BUILD_STATUS -ne 0 ]; then
+    echo "Build failed (exit $BUILD_STATUS) — falling back to dev mode"
+    NODE_OPTIONS="--max-old-space-size=4096" npm run dev &
+    FRONTEND_PID=$!
+  else
+    echo "Build succeeded — starting production server..."
+    NODE_OPTIONS="--max-old-space-size=2048" npm run start &
+    FRONTEND_PID=$!
+  fi
+else
+  echo "Production build found — starting production server..."
+  NODE_OPTIONS="--max-old-space-size=2048" npm run start &
+  FRONTEND_PID=$!
+fi
 
 sleep 12
 

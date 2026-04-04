@@ -45,7 +45,7 @@ The indexer runs as part of the backend and watches for new blocks via WebSocket
 - **All sidebar pages working**: homepage, /txs, /internal-txs, /blocks, /token-transfers, /accounts, /verified-contracts, /tokens, /stats, /gas-tracker
 - **Address pages working**: /address/[hash] — tabs: Details, Transactions, Token transfers, Tokens, Internal txns, Coin balance history, Blocks validated, Logs
 - **Live WebSocket**: indexer watches new blocks and writes to PostgreSQL
-- **Production build disabled**: Next.js `next build` was OOM-killed in Replit's memory-limited environment; running `next dev` instead (functionally identical for this use case)
+- **Production build**: Running `next start` on a compiled production build (Build ID: `uyZhLHdIdyj7mPT6O3-Db`). `start.sh` automatically runs `next build` on first start if no `.next/BUILD_ID` exists, then serves with `next start`. Subsequent restarts reuse the cached build for fast startup.
 - All module stubs and webpack aliases in place (50+ stubs created to fix missing imports)
 - **Token backfills**: All 3 ATH tokens backfilled via eth_getLogs; state stored in indexer_state as `done` so restarts are instant
 - **Search**: supports address (hex), tx hash, block number, AND token name/symbol text search
@@ -122,6 +122,15 @@ The indexer runs as part of the backend and watches for new blocks via WebSocket
 - `nextjs/getServerSideProps/handlers.ts` — created with `Props` type (imported by many pages)
 - `ui/shared/AppActionButton/useAppActionData.tsx` — fixed `data?.addresses[key]` → `data?.addresses?.[key]` (prevented crash when `addresses` is undefined)
 - `next.config.js` — removed broken per-file webpack aliases for reown; uses node_modules stubs instead
+
+## Production Build Fixes (April 2026)
+- `stubs/graphiql.js` — stubs `graphiql`, `@graphiql/react`, and `monaco-graphql`; prevents monaco-editor from importing CSS files inside `node_modules` (forbidden in production builds)
+- `stubs/graphiql-toolkit.js` — stubs `@graphiql/toolkit`
+- `stubs/multisender-widget.js` — stubs `@multisender.app/multisender-react-widget` which imported its own CSS from within node_modules
+- `next.config.js` → `stubAliases` — added webpack aliases for all 5 packages above
+- `ui/apiDocs/GraphQL.tsx` — removed direct `import 'graphiql/graphiql.css'` (now obsolete since graphiql is stubbed)
+- `start.sh` — rewritten to run `npm run build` on first start then `npm run start`; falls back to `next dev` only if build fails; subsequent restarts reuse `.next/BUILD_ID` for instant startup
+- NODE_OPTIONS set to `--max-old-space-size=6144` for build, `2048` for runtime
 
 ## Notable Stubs Created
 Many files were created to resolve missing module errors in the Blockscout UI codebase:
