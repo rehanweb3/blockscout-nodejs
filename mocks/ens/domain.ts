@@ -1,0 +1,16 @@
+export const ENS_DOMAIN_MOCK = {
+  expiry_date: null,
+  id: null,
+  is_expired: false,
+  labels: [],
+  name: 'example.eth',
+  names_count: 1,
+  other_addresses: {},
+  owner: { hash: '0x0000000000000000000000000000000000000000', name: null, is_contract: false, is_verified: false, ens_domain_name: null },
+  registrant: null,
+  registration_date: new Date().toISOString(),
+  resolved_address: { hash: '0x0000000000000000000000000000000000000000', name: null, is_contract: false, is_verified: false, ens_domain_name: null },
+  resolver: null,
+  stored_offchain: false,
+  tokens: [],
+};

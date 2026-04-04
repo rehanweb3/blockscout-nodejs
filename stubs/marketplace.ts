@@ -1,0 +1,16 @@
+export const MARKETPLACE_APP = {
+  id: 'stub',
+  title: 'App',
+  logo: '',
+  shortDescription: '',
+  categories: [],
+  url: '',
+  author: '',
+  description: '',
+  site: '',
+  twitter: '',
+  telegram: '',
+  github: [],
+  internalWallet: false,
+  priority: 0,
+};

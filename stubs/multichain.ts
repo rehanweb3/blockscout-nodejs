@@ -1,0 +1,18 @@
+export const HOMEPAGE_STATS = {
+  total_blocks: '0',
+  total_addresses: '0',
+  total_transactions: '0',
+  average_block_time: 12000,
+  coin_price: null,
+  coin_price_change_percentage: null,
+  total_gas_used: '0',
+  transactions_today: null,
+  gas_used_today: '0',
+  gas_prices: null,
+  gas_price_updated_at: null,
+  gas_prices_update_in: 30000,
+  static_gas_price: null,
+  market_cap: null,
+  network_utilization_percentage: 0,
+  tvl: null,
+};

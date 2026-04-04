@@ -1,0 +1,10 @@
+export const createAppKit = () => ({});
+export const useAppKitTheme = () => ({ setThemeVariables: () => {}, themeVariables: {} });
+export const useAppKit = () => ({ open: () => {}, close: () => {} });
+export const useAppKitState = () => ({ open: false, selectedNetworkId: undefined });
+export const useAppKitAccount = () => ({ address: undefined, isConnected: false });
+export const useAppKitNetwork = () => ({ chainId: undefined, switchNetwork: () => {} });
+export const useDisconnect = () => ({ disconnect: () => {} });
+export const AppKitButton = () => null;
+export const networks = {};
+export default {};

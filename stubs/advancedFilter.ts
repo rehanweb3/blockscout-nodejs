@@ -1,0 +1,18 @@
+export const ADVANCED_FILTER_ITEM = {
+  age: '1',
+  block_number: 1,
+  call_data: '0x',
+  created_contract: null,
+  decoded_call: null,
+  fee: '0',
+  from: { hash: '0x0000000000000000000000000000000000000000', name: null, is_contract: false, is_verified: false, ens_domain_name: null },
+  hash: '0x0000000000000000000000000000000000000000000000000000000000000000',
+  method: null,
+  timestamp: new Date().toISOString(),
+  to: null,
+  token_transfers: null,
+  token_transfers_overflow: false,
+  transaction_index: 0,
+  type: 'token_transfer',
+  value: '0',
+};

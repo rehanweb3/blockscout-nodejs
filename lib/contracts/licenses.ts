@@ -1,0 +1,15 @@
+export const CONTRACT_LICENSES: Array<{ label: string; type: string }> = [
+  { type: 'none', label: 'No License (None)' },
+  { type: 'unlicense', label: 'The Unlicense (Unlicense)' },
+  { type: 'mit', label: 'MIT License (MIT)' },
+  { type: 'gnu_gpl_v2', label: 'GNU General Public License v2.0 (GNU GPLv2)' },
+  { type: 'gnu_lgpl_v2_1', label: 'GNU Lesser General Public License v2.1 (GNU LGPLv2.1)' },
+  { type: 'bsd_2_clause', label: 'BSD 2-Clause "Simplified" license (BSD-2-Clause)' },
+  { type: 'bsd_3_clause', label: 'BSD 3-Clause "New" Or "Revised" license (BSD-3-Clause)' },
+  { type: 'mpl_2_0', label: 'Mozilla Public License 2.0 (MPL-2.0)' },
+  { type: 'osl_3_0', label: 'Open Software License 3.0 (OSL-3.0)' },
+  { type: 'apache_2_0', label: 'Apache 2.0 (Apache-2.0)' },
+  { type: 'gnu_gpl_v3', label: 'GNU General Public License v3.0 (GNU GPLv3)' },
+  { type: 'gnu_lgpl_v3', label: 'GNU Lesser General Public License v3.0 (GNU LGPLv3)' },
+  { type: 'business_source_license_1_1', label: 'Business Source License (BSL 1.1)' },
+];

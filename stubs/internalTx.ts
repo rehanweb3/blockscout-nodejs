@@ -1,0 +1,15 @@
+export const INTERNAL_TX = {
+  block: 0,
+  block_index: 0,
+  created_contract: null,
+  error: null,
+  from: { hash: '0x0000000000000000000000000000000000000000' as `0x${string}`, name: null, is_contract: false, is_verified: false },
+  gas_limit: '21000',
+  index: 0,
+  success: true,
+  timestamp: new Date().toISOString(),
+  to: { hash: '0x0000000000000000000000000000000000000000' as `0x${string}`, name: null, is_contract: false, is_verified: false },
+  transaction_hash: '0x0000000000000000000000000000000000000000000000000000000000000000' as `0x${string}`,
+  type: 'call',
+  value: '0',
+};

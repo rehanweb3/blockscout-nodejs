@@ -1,0 +1,21 @@
+export const apps = [
+  {
+    id: 'example',
+    title: 'Example App',
+    logo: '',
+    shortDescription: 'An example app',
+    url: '',
+    categories: [],
+    author: '',
+    description: '',
+    site: '',
+    twitter: '',
+    telegram: '',
+    discord: '',
+    github: [''],
+    isAlpha: false,
+    internalWallet: false,
+    securityReport: null,
+    chains: null,
+  },
+];
