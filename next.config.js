@@ -89,6 +89,7 @@ const nextConfig = {
     config.resolve.alias = { ...config.resolve.alias, ...stubAliases };
 
     if (!isServer && !dev) {
+      config.parallelism = 1;
       config.optimization = {
         ...config.optimization,
         splitChunks: {

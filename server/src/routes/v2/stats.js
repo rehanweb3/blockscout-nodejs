@@ -111,7 +111,7 @@ const CHART_SECTIONS = [
     title: 'Transactions',
     charts: [
       { id: 'txns_count', title: 'Daily transactions', description: 'Number of transactions per day', units: null },
-      { id: 'average_txn_fee', title: 'Average transaction fee', description: 'Average transaction fee in native tokens per day', units: 'ETH' },
+      { id: 'average_txn_fee', title: 'Average transaction fee', description: 'Average transaction fee in native tokens per day', units: 'ATH' },
     ],
   },
   {

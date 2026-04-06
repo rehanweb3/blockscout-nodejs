@@ -144,7 +144,7 @@ const config = {
     adsBanner: { isEnabled: false, provider: 'none', isSpecifyEnabled: false },
     adsText: { isEnabled: false, provider: 'none' },
     advancedFilter: { isEnabled: false },
-    apiDocs: { isEnabled: false },
+    apiDocs: { isEnabled: true, tabs: [ 'rest_api' ] as Array<string>, alertMessage: null as string | null },
     arbitrumRollup: { isEnabled: false },
     beaconChain: { isEnabled: false },
     blobs: { isEnabled: false },

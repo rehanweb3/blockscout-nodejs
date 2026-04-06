@@ -22,7 +22,7 @@ export const STATS_CHARTS = {
       title: 'Transactions',
       charts: [
         { id: 'txns_count', title: 'Daily transactions', description: 'Number of transactions per day', units: null },
-        { id: 'average_txn_fee', title: 'Average transaction fee', description: 'Average transaction fee per day', units: 'ETH' },
+        { id: 'average_txn_fee', title: 'Average transaction fee', description: 'Average transaction fee per day', units: 'ATH' },
       ],
     },
     {

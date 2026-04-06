@@ -81,6 +81,10 @@ router.get('/', async (req, res) => {
     const filter = req.query.filter;
     const beforeBlock = req.query.block_number_lt ? Number(req.query.block_number_lt) : null;
 
+    const cacheKey = `txs:${filter || 'all'}:${beforeBlock || ''}:${limit}`;
+    const cached = await cacheGet(cacheKey);
+    if (cached) return res.json(cached);
+
     let whereClause = 'WHERE 1=1';
     const params = [];
 

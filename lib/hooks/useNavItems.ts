@@ -107,6 +107,11 @@ export default function useNavItems(): {
           nextRoute: { pathname: '/contract-verification' },
           icon: 'navigation-verified_contracts',
         },
+        {
+          text: 'API',
+          nextRoute: { pathname: '/api-docs' },
+          icon: 'navigation-stats',
+        },
       ],
     },
   ];
