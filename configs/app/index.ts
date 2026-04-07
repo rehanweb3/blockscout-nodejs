@@ -1,5 +1,13 @@
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_HOST || '';
 
+const getChainConfigValue = (key: 'rpcUrl' | 'wsUrl' | 'chainId'): string => {
+  if (typeof window !== 'undefined') {
+    const chainCfg = (window as Window & { __CHAIN_CONFIG__?: Record<string, string> }).__CHAIN_CONFIG__;
+    if (chainCfg && chainCfg[key]) return chainCfg[key];
+  }
+  return '';
+};
+
 const config = {
   app: {
     baseUrl: process.env.NEXT_PUBLIC_APP_HOST || '',
@@ -10,7 +18,7 @@ const config = {
     general: {
       endpoint: BACKEND_URL,
       basePath: '/api/v2',
-      socket: process.env.NEXT_PUBLIC_NETWORK_WS_URL || null,
+      socket: getChainConfigValue('wsUrl') || null,
       socketNamespace: undefined as string | undefined,
     },
     rewards: {
@@ -112,7 +120,7 @@ const config = {
     name: process.env.NEXT_PUBLIC_NETWORK_NAME || 'Blockscout Explorer',
     shortName: process.env.NEXT_PUBLIC_NETWORK_SHORT_NAME || 'BSE',
     id: process.env.NEXT_PUBLIC_NETWORK_ID || '1',
-    rpcUrl: process.env.NEXT_PUBLIC_NETWORK_RPC_URL || null,
+    rpcUrl: getChainConfigValue('rpcUrl') || null,
     rpcUrls: [] as Array<string>,
     currency: {
       name: process.env.NEXT_PUBLIC_NETWORK_CURRENCY_NAME || 'Ether',

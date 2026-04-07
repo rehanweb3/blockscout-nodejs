@@ -6,7 +6,9 @@ router.get('/', async (req, res) => {
   res.json({
     openapi_spec_folder_name: 'blockscout',
     backend_version: '1.0.0',
-    chain_id: process.env.NEXT_PUBLIC_NETWORK_ID || '1',
+    chain_id: process.env.CHAIN_ID || process.env.NEXT_PUBLIC_NETWORK_ID || '786',
+    rpc_url: process.env.RPC_URL || 'https://rpc.atherchain.tech',
+    websocket_url: process.env.WS_URL || 'wss://websocket.atherchain.tech',
     currency: {
       symbol: process.env.NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL || 'ATH',
       name: process.env.NEXT_PUBLIC_NETWORK_CURRENCY_NAME || 'Ather',

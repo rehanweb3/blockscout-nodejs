@@ -1,4 +1,4 @@
-import type { DocumentContext } from 'next/document';
+import type { DocumentContext, DocumentInitialProps } from 'next/document';
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 import React from 'react';
 
@@ -10,8 +10,37 @@ import * as svgSprite from 'ui/shared/IconSvg';
 
 const marketplaceFeature = config.features.marketplace;
 
-class MyDocument extends Document {
-  static async getInitialProps(ctx: DocumentContext) {
+interface ChainConfig {
+  rpcUrl: string;
+  wsUrl: string;
+  chainId: string;
+}
+
+let cachedChainConfig: ChainConfig | null = null;
+
+async function fetchChainConfig(): Promise<ChainConfig> {
+  if (cachedChainConfig) return cachedChainConfig;
+  try {
+    const backendUrl = process.env.BACKEND_URL || 'http://localhost:3001';
+    const response = await fetch(`${ backendUrl }/api/v2/config`, { signal: AbortSignal.timeout(3000) });
+    const data = await response.json() as { rpc_url?: string; websocket_url?: string; chain_id?: string };
+    cachedChainConfig = {
+      rpcUrl: data.rpc_url || '',
+      wsUrl: data.websocket_url || '',
+      chainId: data.chain_id || '1',
+    };
+  } catch {
+    cachedChainConfig = { rpcUrl: '', wsUrl: '', chainId: '1' };
+  }
+  return cachedChainConfig;
+}
+
+interface MyDocumentProps extends DocumentInitialProps {
+  chainConfig: ChainConfig;
+}
+
+class MyDocument extends Document<MyDocumentProps> {
+  static async getInitialProps(ctx: DocumentContext): Promise<MyDocumentProps> {
     const originalRenderPage = ctx.renderPage;
     ctx.renderPage = async() => {
       const start = Date.now();
@@ -25,12 +54,22 @@ class MyDocument extends Document {
 
     await logRequestFromBot(ctx.req, ctx.res, ctx.pathname);
 
-    const initialProps = await Document.getInitialProps(ctx);
+    const [ initialProps, chainConfig ] = await Promise.all([
+      Document.getInitialProps(ctx),
+      fetchChainConfig(),
+    ]);
 
-    return initialProps;
+    return { ...initialProps, chainConfig };
   }
 
   render() {
+    const { chainConfig } = this.props;
+    const chainConfigJson = JSON.stringify({
+      rpcUrl: chainConfig?.rpcUrl || '',
+      wsUrl: chainConfig?.wsUrl || '',
+      chainId: chainConfig?.chainId || '1',
+    });
+
     return (
       <Html lang="en">
         <Head>
@@ -47,6 +86,13 @@ class MyDocument extends Document {
           <link
             href={ config.UI.fonts.body?.url ?? 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap' }
             rel="stylesheet"
+          />
+
+          { /* CHAIN CONFIG — injected from backend, available as window.__CHAIN_CONFIG__ before any bundle runs */ }
+          { /* eslint-disable-next-line @next/next/no-sync-scripts */ }
+          <script
+            // eslint-disable-next-line react/no-danger
+            dangerouslySetInnerHTML={ { __html: `window.__CHAIN_CONFIG__=${ chainConfigJson };` } }
           />
 
           { /* eslint-disable-next-line @next/next/no-sync-scripts */ }

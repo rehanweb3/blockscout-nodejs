@@ -95,26 +95,25 @@ The explorer will be available at **http://localhost:5000**
 
 ### Frontend (`.env.local`)
 
+> **Design note:** RPC URL, WebSocket URL, and Chain ID are **not** set in the frontend environment.
+> The frontend fetches them at page-serve time from the backend (`GET /api/v2/config`) and injects
+> them into every HTML page as `window.__CHAIN_CONFIG__` before any JavaScript bundle runs.
+> Set these values only in `server/.env`.
+
 ```dotenv
-# ── Network Identity ────────────────────────────────────────────────────────
+# ── Network Identity (display only) ─────────────────────────────────────────
 NEXT_PUBLIC_NETWORK_NAME=Ather Chain          # Full name shown in the UI
 NEXT_PUBLIC_NETWORK_SHORT_NAME=ATHER          # Short name / ticker label
-NEXT_PUBLIC_NETWORK_ID=786                    # Chain ID (EIP-155)
+NEXT_PUBLIC_NETWORK_ID=786                    # Chain ID used for UI display
 
 # ── Native Currency ──────────────────────────────────────────────────────────
 NEXT_PUBLIC_NETWORK_CURRENCY_NAME=ATH         # Currency full name
 NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL=ATH       # Currency symbol shown everywhere
 NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS=18      # Decimal places (usually 18)
 
-# ── RPC / WebSocket ──────────────────────────────────────────────────────────
-NEXT_PUBLIC_NETWORK_RPC_URL=https://rpc.atherchain.tech
-NEXT_PUBLIC_NETWORK_WS_URL=wss://websocket.atherchain.tech
-
 # ── API Routing ───────────────────────────────────────────────────────────────
 NEXT_PUBLIC_API_HOST=                         # Leave empty to use relative URLs (recommended)
-BACKEND_URL=http://localhost:3001             # Internal URL Next.js proxies /api/v2/* to
-RPC_URL=https://rpc.atherchain.tech           # Used by server-side Next.js pages
-WS_URL=wss://websocket.atherchain.tech
+BACKEND_URL=http://localhost:3001             # Internal URL Next.js uses to reach the backend
 
 # ── Optional Integrations (set to 'xxx' or leave blank to disable) ───────────
 NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=xxx
