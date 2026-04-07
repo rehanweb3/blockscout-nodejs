@@ -1,10 +1,17 @@
 const BACKEND_URL = process.env.NEXT_PUBLIC_API_HOST || '';
 
 const getChainConfigValue = (key: 'rpcUrl' | 'wsUrl' | 'chainId'): string => {
+  // Client-side: use the value injected by _document.tsx from the backend.
   if (typeof window !== 'undefined') {
     const chainCfg = (window as Window & { __CHAIN_CONFIG__?: Record<string, string> }).__CHAIN_CONFIG__;
     if (chainCfg && chainCfg[key]) return chainCfg[key];
   }
+  // Server-side (SSR) fallback: private env vars (no NEXT_PUBLIC_ prefix — not bundled to client).
+  // These mirror server/.env values and are set in .env.local without NEXT_PUBLIC_ so they are
+  // available in server-side Next.js code paths but never shipped in browser bundles.
+  if (key === 'rpcUrl') return process.env.NETWORK_RPC_URL || '';
+  if (key === 'wsUrl') return process.env.NETWORK_WS_URL || '';
+  if (key === 'chainId') return process.env.NEXT_PUBLIC_NETWORK_ID || '1';
   return '';
 };
 
