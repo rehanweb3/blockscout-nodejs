@@ -24,35 +24,13 @@ sleep 2
 
 cd /home/runner/workspace
 
-if [ ! -d ".next" ] || [ ! -f ".next/BUILD_ID" ]; then
-  echo "No production build found — running next build..."
-  NODE_OPTIONS="--max-old-space-size=6144" npm run build
-  BUILD_STATUS=$?
-  if [ $BUILD_STATUS -ne 0 ]; then
-    echo "Build failed (exit $BUILD_STATUS) — falling back to dev mode"
-    NODE_OPTIONS="--max-old-space-size=4096" npm run dev &
-    FRONTEND_PID=$!
-  else
-    echo "Build succeeded — starting production server..."
-    NODE_OPTIONS="--max-old-space-size=2048" npm run start &
-    FRONTEND_PID=$!
-  fi
-else
-  echo "Production build found — starting production server..."
-  NODE_OPTIONS="--max-old-space-size=2048" npm run start &
-  FRONTEND_PID=$!
+PROD_COMPLETE=false
+if [ -f ".next/BUILD_ID" ] && [ -f ".next/routes-manifest.json" ] && [ -f ".next/prerender-manifest.json" ] && [ -d ".next/static" ]; then
+  PROD_COMPLETE=true
 fi
 
-sleep 12
-
-echo "Pre-warming key pages for fast navigation..."
-for path in / /txs /blocks /token-transfers /tokens /stats; do
-  curl -s --max-time 60 "http://localhost:5000${path}" -o /dev/null
-done
-echo "Pre-warming complete."
-
 cleanup() {
-  kill $BACKEND_PID $FRONTEND_PID 2>/dev/null
+  kill $BACKEND_PID $FRONTEND_PID $PLACEHOLDER_PID 2>/dev/null
   if [ "$LOCAL_REDIS" = "true" ]; then
     redis-cli shutdown 2>/dev/null
   fi
@@ -60,4 +38,47 @@ cleanup() {
 }
 trap cleanup SIGTERM SIGINT
 
-wait $FRONTEND_PID
+if [ "$PROD_COMPLETE" = "true" ]; then
+  echo "Complete production build found — starting production server..."
+  NODE_OPTIONS="--max-old-space-size=2048" npm run start &
+  FRONTEND_PID=$!
+  wait $FRONTEND_PID
+else
+  echo "No complete production build — starting placeholder server on port 5000..."
+  # Start a minimal HTTP server to keep the workflow alive while we build
+  node -e "
+const http = require('http');
+const fs = require('fs');
+const body = '<html><body><h2>Ather Chain Explorer</h2><p>Starting up... Please wait while the application builds.</p><script>setTimeout(function(){window.location.reload()},15000);</script></body></html>';
+const server = http.createServer((req, res) => {
+  res.writeHead(200, {'Content-Type': 'text/html'});
+  res.end(body);
+});
+server.listen(5000, '0.0.0.0', () => console.log('Placeholder on 5000'));
+// Stop when signal file appears
+setInterval(() => { if(fs.existsSync('/tmp/placeholder_stop')) process.exit(0); }, 1000);
+" &
+  PLACEHOLDER_PID=$!
+  sleep 3
+
+  echo "Building production bundle (full memory, no dev server)..."
+  NODE_OPTIONS="--max-old-space-size=6144" NEXT_TELEMETRY_DISABLED=1 npm run build > /tmp/build.log 2>&1
+  BUILD_STATUS=$?
+
+  if [ $BUILD_STATUS -eq 0 ] && [ -f ".next/BUILD_ID" ] && [ -f ".next/routes-manifest.json" ]; then
+    echo "Build succeeded — stopping placeholder and starting production server..."
+    touch /tmp/placeholder_stop
+    sleep 2
+    NODE_OPTIONS="--max-old-space-size=2048" npm run start &
+    FRONTEND_PID=$!
+    wait $FRONTEND_PID
+  else
+    echo "Build failed (exit $BUILD_STATUS) — switching to dev mode..."
+    cat /tmp/build.log | tail -20
+    touch /tmp/placeholder_stop
+    sleep 2
+    NODE_OPTIONS="--max-old-space-size=4096" npm run dev &
+    FRONTEND_PID=$!
+    wait $FRONTEND_PID
+  fi
+fi

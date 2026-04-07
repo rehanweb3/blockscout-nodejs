@@ -45,6 +45,7 @@ const ROUTES: Record<string, (p?: Record<string, unknown>) => string> = {
   'homepage_blocks': () => '/main-page/blocks',
   'homepage_txs': () => '/main-page/transactions',
   'config_backend_version': () => '/config/backend-version',
+  'config_backend': () => '/config',
   'smart_contracts': () => '/smart-contracts',
   'smart_contracts_counters': () => '/smart-contracts/counters',
   'verified_contracts': () => '/smart-contracts',

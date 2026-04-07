@@ -20,7 +20,9 @@ Full-stack Blockscout blockchain explorer migrated to Replit. The original Next.
 ```bash
 bash start.sh
 ```
-Starts backend (port 3001) + frontend dev server (port 5000) simultaneously.
+Starts backend (port 3001) first, then checks for production build:
+- If build exists: starts `next start` (port 5000) immediately
+- If no build: starts placeholder HTTP server, runs `next build` with 6GB heap, then switches to `next start`
 The indexer runs as part of the backend and watches for new blocks via WebSocket.
 
 ## Completed Features
@@ -45,7 +47,8 @@ The indexer runs as part of the backend and watches for new blocks via WebSocket
 - **All sidebar pages working**: homepage, /txs, /internal-txs, /blocks, /token-transfers, /accounts, /verified-contracts, /tokens, /stats, /gas-tracker
 - **Address pages working**: /address/[hash] — tabs: Details, Transactions, Token transfers, Tokens, Internal txns, Coin balance history, Blocks validated, Logs
 - **Live WebSocket**: indexer watches new blocks and writes to PostgreSQL
-- **Production build**: Running `next start` on a compiled production build (Build ID: `uyZhLHdIdyj7mPT6O3-Db`). `start.sh` automatically runs `next build` on first start if no `.next/BUILD_ID` exists, then serves with `next start`. Subsequent restarts reuse the cached build for fast startup.
+- **Production build**: Running `next start` on a compiled production build. `start.sh` automatically runs `next build` on first start if no `.next/BUILD_ID` exists, then serves with `next start`. Subsequent restarts reuse the cached build for fast startup.
+- **API docs page** (`/api-docs`): Fully working. `GET /api/v2/config` backend endpoint added; `config_backend` route added to `lib/api/fetchApi.ts`. Swagger UI loads with Blockscout REST API spec from GitHub.
 - All module stubs and webpack aliases in place (50+ stubs created to fix missing imports)
 - **Token backfills**: All 3 ATH tokens backfilled via eth_getLogs; state stored in indexer_state as `done` so restarts are instant
 - **Search**: supports address (hex), tx hash, block number, AND token name/symbol text search

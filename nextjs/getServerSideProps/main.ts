@@ -14,3 +14,4 @@ export const tx = base;
 export const block = base;
 export const address = base;
 export const token = base;
+export const apiDocs = base;
