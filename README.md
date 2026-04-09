@@ -6,7 +6,7 @@
 
 ## Overview
 
-This is a fully functional blockchain explorer for the **Ather Chain** network, built on the [Blockscout](https://blockscout.com) open-source explorer frontend. The original Elixir/Phoenix backend has been replaced with a **Node.js + Express** backend, making it simpler to deploy and customize without requiring an Elixir runtime.
+This is a fully functional blockchain explorer for the **Any EVM** network, built on the [Blockscout](https://blockscout.com) open-source explorer frontend. The original Elixir/Phoenix backend has been replaced with a **Node.js + Express** backend, making it simpler to deploy and customize without requiring an Elixir runtime.
 
 ### Stack
 
