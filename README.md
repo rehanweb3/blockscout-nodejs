@@ -18,7 +18,7 @@ This is a fully functional blockchain explorer for the **Ather Chain** network, 
 | Cache Layer | Redis (optional, graceful fallback) |
 | Document Store | MongoDB (indexer state & metadata) |
 | Blockchain Indexer | Custom Node.js indexer (WebSocket + RPC) |
-| Native Currency | ATH (Ather) |
+| Native Currency | ETH (Ethereum) |
 
 ---
 
@@ -102,13 +102,13 @@ The explorer will be available at **http://localhost:5000**
 
 ```dotenv
 # ── Network Identity (display only) ─────────────────────────────────────────
-NEXT_PUBLIC_NETWORK_NAME=Ather Chain          # Full name shown in the UI
-NEXT_PUBLIC_NETWORK_SHORT_NAME=ATHER          # Short name / ticker label
-NEXT_PUBLIC_NETWORK_ID=786                    # Chain ID used for UI display
+NEXT_PUBLIC_NETWORK_NAME=Ethereum          # Full name shown in the UI
+NEXT_PUBLIC_NETWORK_SHORT_NAME=ETH          # Short name / ticker label
+NEXT_PUBLIC_NETWORK_ID=1                    # Chain ID used for UI display
 
 # ── Native Currency ──────────────────────────────────────────────────────────
-NEXT_PUBLIC_NETWORK_CURRENCY_NAME=ATH         # Currency full name
-NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL=ATH       # Currency symbol shown everywhere
+NEXT_PUBLIC_NETWORK_CURRENCY_NAME=ETH         # Currency full name
+NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL=ETH       # Currency symbol shown everywhere
 NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS=18      # Decimal places (usually 18)
 
 # ── API Routing ───────────────────────────────────────────────────────────────
@@ -147,9 +147,9 @@ REDIS_URL=                                    # Leave empty to use a local Redis
 # If unset, start.sh launches a local redis-server automatically
 
 # ── Blockchain Node ───────────────────────────────────────────────────────────
-RPC_URL=https://rpc.atherchain.tech           # JSON-RPC endpoint
-WS_URL=wss://websocket.atherchain.tech        # WebSocket endpoint for live events
-CHAIN_ID=786
+RPC_URL=https://ethereum-rpc.publicnode.com           # JSON-RPC endpoint
+WS_URL=wss://eth-mainnet.ws.alchemyapi.io/ws/demo        # WebSocket endpoint for live events
+CHAIN_ID=1
 
 # ── Indexer ───────────────────────────────────────────────────────────────────
 ENABLE_INDEXER=true                           # Set to false to disable the indexer
